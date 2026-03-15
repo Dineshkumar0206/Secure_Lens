@@ -1,0 +1,174 @@
+# ============================================================
+# SecureLens – .gitignore
+# Covers: Spring Boot (Maven) + React (Node) + IDE + OS files
+# ============================================================
+
+
+# ─────────────────────────────────────────
+# SECURITY — NEVER commit these
+# ─────────────────────────────────────────
+*.env
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+.env*.local
+application-secret.properties
+application.properties
+secrets.properties
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore
+
+
+# ─────────────────────────────────────────
+# SPRING BOOT / MAVEN (backend/)
+# ─────────────────────────────────────────
+backend/target/
+backend/.mvn/wrapper/maven-wrapper.jar
+backend/.mvn/wrapper/maven-wrapper.properties
+!backend/.mvn/wrapper/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+*.zip
+*.tar.gz
+*.rar
+hs_err_pid*
+replay_pid*
+
+# Maven wrapper
+mvnw
+mvnw.cmd
+
+
+# ─────────────────────────────────────────
+# REACT / NODE (frontend/)
+# ─────────────────────────────────────────
+frontend/node_modules/
+frontend/build/
+frontend/.pnp
+frontend/.pnp.js
+frontend/coverage/
+
+# npm / yarn logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+
+# Optional eslint cache
+frontend/.eslintcache
+
+# Parcel cache
+frontend/.cache/
+frontend/.parcel-cache/
+
+
+# ─────────────────────────────────────────
+# IDE — IntelliJ IDEA
+# ─────────────────────────────────────────
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+.idea_modules/
+
+
+# ─────────────────────────────────────────
+# IDE — VS Code
+# ─────────────────────────────────────────
+.vscode/
+!.vscode/extensions.json
+
+
+# ─────────────────────────────────────────
+# IDE — Eclipse / STS
+# ─────────────────────────────────────────
+.classpath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+bin/
+
+
+# ─────────────────────────────────────────
+# IDE — NetBeans
+# ─────────────────────────────────────────
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+
+# ─────────────────────────────────────────
+# OS — macOS
+# ─────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.AppleDouble
+.LSOverride
+
+
+# ─────────────────────────────────────────
+# OS — Windows
+# ─────────────────────────────────────────
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+
+# ─────────────────────────────────────────
+# OS — Linux
+# ─────────────────────────────────────────
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+
+# ─────────────────────────────────────────
+# LOGS
+# ─────────────────────────────────────────
+*.log
+logs/
+log/
+spring.log
+
+
+# ─────────────────────────────────────────
+# DATABASE
+# ─────────────────────────────────────────
+*.sql.bak
+*.db
+*.sqlite
+*.sqlite3
+dump.rdb
+
+
+# ─────────────────────────────────────────
+# MISC
+# ─────────────────────────────────────────
+*.swp
+*.swo
+*.tmp
+*.bak
+*.orig
+.gradle/
