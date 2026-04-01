@@ -16,6 +16,7 @@ import DashboardPage from "./pages/DashboardPage";
 import ScannerPage from "./pages/ScannerPage";
 import HistoryPage from "./pages/HistoryPage";
 import ProfilePage from "./pages/ProfilePage";
+import AccountSettingsPage from "./pages/AccountSettingsPage";
 
 function App() {
   return (
@@ -55,6 +56,14 @@ function App() {
           element={
             <ProtectedRoute>
               <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute>
+              <AccountSettingsPage />
             </ProtectedRoute>
           }
         />

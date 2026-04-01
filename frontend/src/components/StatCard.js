@@ -6,8 +6,8 @@ import React from 'react';
 export default function StatCard({ label, value, icon, accent = '#00d4ff', sublabel }) {
   return (
     <div style={{
-      background: '#111827',
-      border: '1px solid #1e2d45',
+      background: 'var(--bg-card)',
+      border: '1px solid var(--border)',
       borderRadius: '12px',
       padding: '1.5rem',
       display: 'flex',
@@ -28,7 +28,7 @@ export default function StatCard({ label, value, icon, accent = '#00d4ff', subla
           fontSize: '0.75rem',
           fontFamily: "'Inter', sans-serif",
           fontWeight: 600,
-          color: '#8899aa',
+          color: 'var(--text-secondary)',
           textTransform: 'uppercase',
           letterSpacing: '0.08em',
         }}>
@@ -51,7 +51,7 @@ export default function StatCard({ label, value, icon, accent = '#00d4ff', subla
       {sublabel && (
         <div style={{
           fontSize: '0.75rem',
-          color: '#4a5568',
+          color: 'var(--text-muted)',
           fontFamily: "'Inter', sans-serif",
         }}>
           {sublabel}

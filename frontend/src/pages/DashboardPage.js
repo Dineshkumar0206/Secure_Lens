@@ -41,7 +41,7 @@ export default function DashboardPage() {
           <div>
             <h1 style={styles.pageTitle}>Dashboard</h1>
             <p style={styles.pageSub}>
-              Welcome back, <span style={{ color: '#00d4ff' }}>{user?.username}</span>
+              Welcome back, <span style={{ color: 'var(--accent-cyan)' }}>{user?.username}</span>
             </p>
           </div>
           <Link to="/scanner" style={styles.scanBtn}>+ New Scan</Link>
@@ -51,10 +51,10 @@ export default function DashboardPage() {
           <>
             {/* Stats grid */}
             <div style={styles.statsGrid}>
-              <StatCard label="Total Scans"      value={stats?.totalScans}      icon="🔍" accent="#00d4ff"  sublabel="All time" />
-              <StatCard label="Safe Links"        value={stats?.safeLinks}        icon="✓"  accent="#00ff88"  sublabel="No threats found" />
-              <StatCard label="Suspicious"        value={stats?.suspiciousLinks}  icon="⚠"  accent="#ff8c42"  sublabel="Needs caution" />
-              <StatCard label="Phishing Detected" value={stats?.phishingDetected} icon="🎣" accent="#ff3d5a"  sublabel="Blocked threats" />
+              <StatCard label="Total Scans"      value={stats?.totalScans}      icon="🔍" accent="var(--accent-cyan)"  sublabel="All time" />
+              <StatCard label="Safe Links"        value={stats?.safeLinks}        icon="✓"  accent="var(--safe-color)"  sublabel="No threats found" />
+              <StatCard label="Suspicious"        value={stats?.suspiciousLinks}  icon="⚠"  accent="var(--suspicious-color)"  sublabel="Needs caution" />
+              <StatCard label="Phishing Detected" value={stats?.phishingDetected} icon="🎣" accent="var(--phishing-color)"  sublabel="Blocked threats" />
             </div>
 
             {/* Recent scans */}
@@ -67,7 +67,7 @@ export default function DashboardPage() {
               {recent.length === 0 ? (
                 <div style={styles.empty}>
                   <span style={{ fontSize: '2rem' }}>🔍</span>
-                  <p>No scans yet. <Link to="/scanner" style={{ color: '#00d4ff' }}>Scan your first URL</Link></p>
+                  <p>No scans yet. <Link to="/scanner" style={{ color: 'var(--accent-cyan)' }}>Scan your first URL</Link></p>
                 </div>
               ) : (
                 <div style={styles.recentList}>
@@ -112,29 +112,61 @@ export default function DashboardPage() {
 }
 
 const styles = {
-  page: { minHeight: '100vh', background: '#080c18', color: '#e8edf5' },
+  page: { minHeight: '100vh', background: 'var(--bg-primary)', color: 'var(--text-primary)' },
   main: { maxWidth: '1100px', margin: '0 auto', padding: '2rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '2rem' },
   pageHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' },
-  pageTitle: { fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800, fontSize: '1.75rem', color: '#e8edf5', letterSpacing: '-0.02em' },
-  pageSub: { color: '#8899aa', fontFamily: "'Inter',sans-serif", fontSize: '0.9rem', marginTop: '0.25rem' },
-  scanBtn: { padding: '0.6rem 1.5rem', background: '#00d4ff', color: '#000', borderRadius: '8px', textDecoration: 'none', fontWeight: 700, fontFamily: "'Space Grotesk',sans-serif", fontSize: '0.875rem', whiteSpace: 'nowrap' },
+  pageTitle: { fontFamily: "'Space Grotesk',sans-serif", fontWeight: 800, fontSize: '1.75rem', color: 'var(--text-primary)', letterSpacing: '-0.02em' },
+  pageSub: { color: 'var(--text-secondary)', fontFamily: "'Inter',sans-serif", fontSize: '0.9rem', marginTop: '0.25rem' },
+  scanBtn: {
+    padding: '0.6rem 1.5rem',
+    background: 'linear-gradient(135deg, var(--accent-cyan), var(--accent-purple))',
+    color: '#040c18',
+    borderRadius: '8px',
+    textDecoration: 'none',
+    fontWeight: 700,
+    fontFamily: "'Space Grotesk',sans-serif",
+    fontSize: '0.875rem',
+    whiteSpace: 'nowrap',
+    boxShadow: '0 10px 25px rgba(0,212,255,0.3)',
+  },
   statsGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' },
-  section: { background: '#111827', border: '1px solid #1e2d45', borderRadius: '12px', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' },
+  section: { background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '12px', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' },
   sectionHeader: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' },
-  sectionTitle: { fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: '1rem', color: '#e8edf5' },
-  viewAll: { color: '#00d4ff', textDecoration: 'none', fontSize: '0.85rem', fontFamily: "'Inter',sans-serif" },
-  empty: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem', padding: '2rem', color: '#8899aa', fontFamily: "'Inter',sans-serif", fontSize: '0.9rem' },
+  sectionTitle: { fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: '1rem', color: 'var(--text-primary)' },
+  viewAll: { color: 'var(--accent-cyan)', textDecoration: 'none', fontSize: '0.85rem', fontFamily: "'Inter',sans-serif" },
+  empty: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem', padding: '2rem', color: 'var(--text-secondary)', fontFamily: "'Inter',sans-serif", fontSize: '0.9rem' },
   recentList: { display: 'flex', flexDirection: 'column', gap: '0.75rem' },
-  recentRow: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', padding: '0.85rem 1rem', background: '#0d1220', borderRadius: '8px', border: '1px solid #1e2d45', flexWrap: 'wrap' },
+  recentRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    gap: '1rem',
+    padding: '0.85rem 1rem',
+    background: 'var(--bg-secondary)',
+    borderRadius: '8px',
+    border: '1px solid var(--border)',
+    flexWrap: 'wrap',
+  },
   recentLeft: { display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, minWidth: 0 },
-  recentUrl: { fontFamily: "'Space Mono',monospace", fontSize: '0.78rem', color: '#8899aa', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
+  recentUrl: { fontFamily: "'Space Mono',monospace", fontSize: '0.78rem', color: 'var(--text-secondary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
   recentRight: { display: 'flex', alignItems: 'center', gap: '1rem', flexShrink: 0 },
-  recentScore: { fontFamily: "'Space Mono',monospace", fontSize: '0.85rem', color: '#e8edf5', fontWeight: 700 },
-  recentDate: { fontSize: '0.75rem', color: '#4a5568', fontFamily: "'Inter',sans-serif" },
+  recentScore: { fontFamily: "'Space Mono',monospace", fontSize: '0.85rem', color: 'var(--text-primary)', fontWeight: 700 },
+  recentDate: { fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: "'Inter',sans-serif" },
   quickActions: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' },
-  actionCard: { background: '#111827', border: '1px solid #1e2d45', borderRadius: '12px', padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', textDecoration: 'none', transition: 'border-color 0.2s' },
-  actionLabel: { fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: '0.95rem', color: '#e8edf5' },
-  actionSub: { fontSize: '0.8rem', color: '#8899aa', fontFamily: "'Inter',sans-serif" },
+  actionCard: {
+    background: 'var(--bg-card)',
+    border: '1px solid var(--border)',
+    borderRadius: '12px',
+    padding: '1.5rem',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '0.5rem',
+    textDecoration: 'none',
+    transition: 'border-color 0.2s',
+    boxShadow: '0 15px 35px rgba(0, 0, 0, 0.35)',
+  },
+  actionLabel: { fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-primary)' },
+  actionSub: { fontSize: '0.8rem', color: 'var(--text-secondary)', fontFamily: "'Inter',sans-serif" },
 };
 
 

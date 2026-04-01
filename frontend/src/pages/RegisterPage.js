@@ -108,7 +108,7 @@ export default function RegisterPage() {
 
 const styles = {
   page: { minHeight: '100vh', background: '#080c18', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem', position: 'relative' },
-  grid: { position: 'fixed', inset: 0, backgroundImage: `linear-gradient(#1e2d4508 1px, transparent 1px), linear-gradient(90deg, #1e2d4508 1px, transparent 1px)`, backgroundSize: '60px 60px', poInterEvents: 'none' },
+  grid: { position: 'fixed', inset: 0, backgroundImage: `linear-gradient(#1e2d4508 1px, transparent 1px), linear-gradient(90deg, #1e2d4508 1px, transparent 1px)`, backgroundSize: '60px 60px', pointerEvents: 'none' },
   card: { position: 'relative', zIndex: 1, background: '#111827', border: '1px solid #1e2d45', borderRadius: '16px', padding: '2.5rem', width: '100%', maxWidth: '420px', display: 'flex', flexDirection: 'column', gap: '1rem' },
   logoRow: { display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' },
   logoIcon: { fontSize: '1.5rem', color: '#00d4ff' },
@@ -122,7 +122,7 @@ const styles = {
   label: { fontSize: '0.78rem', color: '#8899aa', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase', fontFamily: "'Inter',sans-serif" },
   input: { background: '#0d1220', border: '1px solid #1e2d45', borderRadius: '8px', padding: '0.75rem 1rem', color: '#e8edf5', fontSize: '0.9rem', fontFamily: "'Space Mono',monospace", outline: 'none' },
   strengthRow: { display: 'flex', gap: '4px', marginTop: '-0.25rem' },
-  btn: { marginTop: '0.5rem', padding: '0.85rem', background: '#00d4ff', color: '#000', border: 'none', borderRadius: '10px', fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: '0.95rem', cursor: 'poInter', boxShadow: '0 0 20px rgba(0,212,255,0.25)' },
+  btn: { marginTop: '0.5rem', padding: '0.85rem', background: '#00d4ff', color: '#000', border: 'none', borderRadius: '10px', fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700, fontSize: '0.95rem', cursor: 'pointer', boxShadow: '0 0 20px rgba(0,212,255,0.25)' },
   footer: { textAlign: 'center', color: '#8899aa', fontSize: '0.85rem', fontFamily: "'Inter',sans-serif" },
 };
 

@@ -3,11 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@react-oauth/google": "^0.13.4",
+    "axios": "^1.6.2",
+    "lucide-react": "^0.577.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.0",
-    "axios": "^1.6.2",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "recharts": "^3.8.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -16,11 +19,26 @@
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": ["react-app"]
+    "extends": [
+      "react-app"
+    ]
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
-    "development": ["last 1 chrome version", "last 1 firefox version", "last 1 safari version"]
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
-  "proxy": "http://localhost:8080"
+  "proxy": "http://localhost:8080",
+  "devDependencies": {
+    "autoprefixer": "^10.4.27",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^4.2.1"
+  }
 }

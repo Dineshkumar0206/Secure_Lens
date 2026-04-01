@@ -4,6 +4,8 @@ import com.securelens.dto.Dtos;
 import com.securelens.model.User;
 import com.securelens.repository.UserRepository;
 import com.securelens.security.JwtUtils;
+import com.securelens.service.GoogleTokenVerifier;
+import com.securelens.service.EmailService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -41,6 +44,12 @@ public class AuthController {
 
     @Autowired
     private JwtUtils jwtUtils;
+
+    @Autowired
+    private GoogleTokenVerifier googleTokenVerifier;
+
+    @Autowired
+    private EmailService emailService;
 
     @Value("${app.reset-token-hours:1}")
     private long resetTokenHours;
@@ -120,6 +129,7 @@ public class AuthController {
             user.setResetToken(token);
             user.setResetTokenExpiration(LocalDateTime.now().plusHours(resetTokenHours));
             userRepository.save(user);
+            emailService.sendPasswordReset(user, token);
             logger.info("Password reset token for {}: {}", user.getEmail(), token);
         });
 
@@ -158,5 +168,57 @@ public class AuthController {
                     .orElse(identifier);
         }
         return identifier;
+    }
+
+    /**
+     * POST /api/auth/google
+     * Accepts an ID token produced by Google's OAuth flow and
+     * returns a JWT for the SecureLens backend.
+     */
+    @PostMapping("/google")
+    public ResponseEntity<?> authenticateWithGoogle(@Valid @RequestBody Dtos.GoogleLoginRequest request) {
+        GoogleTokenVerifier.GoogleProfile profile = googleTokenVerifier.verify(request.getToken())
+                .orElseThrow(() -> new RuntimeException("Invalid Google ID token"));
+
+        String email = profile.email();
+        if (email == null || email.isBlank()) {
+            throw new RuntimeException("Google profile missing email");
+        }
+        User user = userRepository.findByEmail(email)
+                .orElseGet(() -> createUserFromGoogle(profile));
+
+        user.setLastLogin(LocalDateTime.now());
+        userRepository.save(user);
+
+        String jwt = jwtUtils.generateTokenFromUsername(user.getUsername());
+        return ResponseEntity.ok(new Dtos.AuthResponse(jwt, user.getId(),
+                user.getUsername(), user.getEmail()));
+    }
+
+    private User createUserFromGoogle(GoogleTokenVerifier.GoogleProfile profile) {
+        User user = new User();
+        user.setEmail(profile.email());
+        user.setUsername(buildUsernameFromGoogle(profile));
+        user.setPassword(passwordEncoder.encode(UUID.randomUUID().toString()));
+        return user;
+    }
+
+    private String buildUsernameFromGoogle(GoogleTokenVerifier.GoogleProfile profile) {
+        String candidateBase = profile.name() != null ? profile.name().trim() : "";
+        if (candidateBase.isBlank()) {
+            candidateBase = profile.email().split("@")[0];
+        }
+        candidateBase = candidateBase.replaceAll("[^a-zA-Z0-9]", "").toLowerCase(Locale.ROOT);
+        if (candidateBase.length() < 3) {
+            candidateBase = candidateBase + "user";
+        }
+
+        String candidate = candidateBase;
+        int suffix = 0;
+        while (userRepository.existsByUsername(candidate)) {
+            suffix++;
+            candidate = candidateBase + suffix;
+        }
+        return candidate;
     }
 }

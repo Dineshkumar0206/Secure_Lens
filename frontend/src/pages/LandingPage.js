@@ -94,7 +94,7 @@ const styles = {
     position: 'fixed', inset: 0, zIndex: 0,
     backgroundImage: `linear-gradient(#1e2d4508 1px, transparent 1px), linear-gradient(90deg, #1e2d4508 1px, transparent 1px)`,
     backgroundSize: '60px 60px',
-    poInterEvents: 'none',
+    pointerEvents: 'none',
   },
   header: {
     position: 'relative', zIndex: 10,

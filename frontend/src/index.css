@@ -58,6 +58,64 @@ html {
   scroll-behavior: smooth;
 }
 
+html[data-theme='light'] {
+  --bg-primary:    #f7f8fb;
+  --bg-secondary:  #ffffff;
+  --bg-card:       #ffffff;
+  --bg-card-hover: #edf1f7;
+  --border:        #d7e0f0;
+  --border-bright: #b5c1d4;
+  --text-primary:  #0b1220;
+  --text-secondary:#4a5568;
+  --text-muted:    #6b7280;
+}
+
+html[data-theme='aurora'] {
+  --bg-primary:    #040615;
+  --bg-secondary:  #0b0f29;
+  --bg-card:       #111235;
+  --bg-card-hover: #1c244f;
+  --border:        #2f2a6c;
+  --border-bright: #473d9a;
+  --text-primary:  #e7e9ff;
+  --text-secondary:#abb1e0;
+  --text-muted:    #6f74a2;
+  --accent-cyan:   #8be0ff;
+  --accent-green:  #96ffcf;
+  --accent-red:    #ff84c4;
+  --accent-orange: #ffaa65;
+  --accent-purple: #c974ff;
+  --safe-color:       #96ffcf;
+  --safe-bg:          rgba(150, 255, 207, 0.08);
+  --suspicious-color: #ffb15d;
+  --suspicious-bg:    rgba(255, 177, 93, 0.08);
+  --phishing-color:   #ff6db5;
+  --phishing-bg:      rgba(255, 109, 181, 0.08);
+}
+
+html[data-theme='sunrise'] {
+  --bg-primary:    #04030b;
+  --bg-secondary:  #0f050f;
+  --bg-card:       #140714;
+  --bg-card-hover: #30131c;
+  --border:        #4d0f1e;
+  --border-bright: #752231;
+  --text-primary:  #ffe6da;
+  --text-secondary:#cda49d;
+  --text-muted:    #8d7b78;
+  --accent-cyan:   #53f4ff;
+  --accent-green:  #9cffc7;
+  --accent-red:    #ff5f5f;
+  --accent-orange: #ff9c5d;
+  --accent-purple: #ff6fd7;
+  --safe-color:       #9cffc7;
+  --safe-bg:          rgba(156, 255, 199, 0.1);
+  --suspicious-color: #ffb75c;
+  --suspicious-bg:    rgba(255, 183, 92, 0.1);
+  --phishing-color:   #ff5f5f;
+  --phishing-bg:      rgba(255, 95, 95, 0.1);
+}
+
 body {
   background-color: var(--bg-primary);
   color: var(--text-primary);

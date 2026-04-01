@@ -2,7 +2,7 @@
  * authService.js – Auth API calls (register, login, logout).
  */
 import api from "./api";
-import { setToken, setUser, clearAuth, getToken } from "../utils/auth";
+import { setToken, setUser, clearAuth, getToken, getUser } from "../utils/auth";
 
 /**
  * Register a new user.
@@ -29,6 +29,17 @@ export const login = async (identifier, password) => {
   const response = await api.post("/api/auth/login", { identifier, password });
   const { token, ...user } = response.data;
   setToken(token);
+  setUser(user);
+  return response.data;
+};
+
+/**
+ * Login via Google OAuth ID token.
+ */
+export const loginWithGoogle = async (token) => {
+  const response = await api.post("/api/auth/google", { token });
+  const { token: jwt, ...user } = response.data;
+  setToken(jwt);
   setUser(user);
   return response.data;
 };
@@ -63,6 +74,35 @@ export const logout = () => {
  */
 export const getProfile = async () => {
   const response = await api.get("/api/user/profile");
+  return response.data;
+};
+
+export const getAccountSettings = async () => {
+  const response = await api.get("/api/user/account-settings");
+  return response.data;
+};
+
+export const updateProfile = async (payload) => {
+  const response = await api.put("/api/user/profile", payload);
+
+  const storedUser = getUser();
+  if (storedUser) {
+    setUser({ ...storedUser, username: response.data.username, email: response.data.email });
+  }
+
+  return response.data;
+};
+
+export const changePassword = async (currentPassword, newPassword) => {
+  const response = await api.post("/api/user/change-password", {
+    currentPassword,
+    newPassword,
+  });
+  return response.data;
+};
+
+export const deleteAccount = async (password) => {
+  const response = await api.post("/api/user/account/delete", { password });
   return response.data;
 };
 

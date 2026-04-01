@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { resetPassword } from '../services/authService';
+import PasswordField from '../components/PasswordField';
 
 export default function ResetPasswordPage() {
   const [searchParams] = useSearchParams();
@@ -68,27 +69,23 @@ export default function ResetPasswordPage() {
 
           <div style={styles.field}>
             <label style={styles.label}>New password</label>
-            <input
-              type="password"
+            <PasswordField
               name="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              required
-              style={styles.input}
+              autoComplete="new-password"
             />
           </div>
 
           <div style={styles.field}>
             <label style={styles.label}>Confirm password</label>
-            <input
-              type="password"
+            <PasswordField
               name="confirm"
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
               placeholder="••••••••"
-              required
-              style={styles.input}
+              autoComplete="new-password"
             />
           </div>
 

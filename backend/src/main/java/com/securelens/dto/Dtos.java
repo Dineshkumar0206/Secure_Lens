@@ -47,6 +47,15 @@ public class Dtos {
     }
 
     /**
+     * Payload for POST /api/auth/google
+     */
+    @Data
+    public static class GoogleLoginRequest {
+        @NotBlank(message = "Token is required")
+        private String token;
+    }
+
+    /**
      * Payload to request a password reset token.
      */
     @Data
@@ -142,6 +151,63 @@ public class Dtos {
         private LocalDateTime createdAt;
         private LocalDateTime lastLogin;
         private long totalScans;
+    }
+
+    /**
+     * Payload for updating a profile
+     */
+    @Data
+    public static class ProfileUpdateRequest {
+        @NotBlank(message = "Display name is required")
+        @Size(min = 3, max = 50, message = "Display name must be 3–50 characters")
+        private String username;
+
+        @NotBlank(message = "Email is required")
+        @Email(message = "Invalid email format")
+        private String email;
+    }
+
+    /**
+     * Payload used when an authenticated user requests a password change.
+     */
+    @Data
+    public static class PasswordChangeRequest {
+        @NotBlank(message = "Current password is required")
+        private String currentPassword;
+
+        @NotBlank(message = "New password is required")
+        @Size(min = 8, message = "New password must be at least 8 characters")
+        private String newPassword;
+    }
+
+    /**
+     * Request used when a user wants to delete their account.
+     */
+    @Data
+    public static class DeleteAccountRequest {
+        @NotBlank(message = "Password is required to delete the account")
+        private String password;
+    }
+
+    /**
+     * Account settings summary shown alongside profile data.
+     */
+    @Data
+    public static class AccountSettings {
+        private Long id;
+        private String username;
+        private String email;
+        private LocalDateTime createdAt;
+        private LocalDateTime lastLogin;
+        private int accountAgeDays;
+        private long daysSinceLastLogin;
+        private long totalScans;
+        private long safeScans;
+        private long suspiciousScans;
+        private long phishingScans;
+        private String securityStatus;
+        private String securitySummary;
+        private String recommendedAction;
     }
 
     /**

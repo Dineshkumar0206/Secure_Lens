@@ -51,6 +51,18 @@ public class JwtUtils {
     }
 
     /**
+     * Convenience helper for issuing a token when only the username is available.
+     */
+    public String generateTokenFromUsername(String username) {
+        return Jwts.builder()
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    /**
      * Extract the username (subject) from a JWT token.
      */
     public String getUsernameFromJwtToken(String token) {

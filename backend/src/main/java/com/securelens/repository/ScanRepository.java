@@ -3,6 +3,7 @@ package com.securelens.repository;
 import com.securelens.model.Scan;
 import com.securelens.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -31,4 +32,9 @@ public interface ScanRepository extends JpaRepository<Scan, Long> {
     /** Count total scans across all users (admin/global stats) */
     @Query("SELECT COUNT(s) FROM Scan s WHERE s.threatLevel = :level")
     long countByThreatLevelGlobal(@Param("level") String level);
+
+    /** Delete scans belonging to a specific user */
+    @Modifying
+    void deleteByUserId(Long userId);
+
 }

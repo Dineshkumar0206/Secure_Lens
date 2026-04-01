@@ -3,13 +3,17 @@
  */
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { login } from '../services/authService';
+import { GoogleLogin } from '@react-oauth/google';
+import { login, loginWithGoogle } from '../services/authService';
+import PasswordField from '../components/PasswordField';
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const [form, setForm]     = useState({ identifier: '', password: '' });
   const [error, setError]   = useState('');
+  const [socialError, setSocialError] = useState('');
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const isFormValid = Boolean(form.identifier.trim() && form.password.trim());
 
@@ -21,13 +25,42 @@ export default function LoginPage() {
     setLoading(true);
     try {
       await login(form.identifier, form.password);
-      const from = location.state?.from?.pathname || '/dashboard';
-      navigate(from, { replace: true });
+      redirectAfterLogin();
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid username or password');
     } finally {
       setLoading(false);
     }
+  };
+
+  const redirectAfterLogin = () => {
+    const from = location.state?.from?.pathname || '/dashboard';
+    navigate(from, { replace: true });
+  };
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    const credential = credentialResponse?.credential;
+    if (!credential) {
+      setSocialError('Google authentication failed. Please try again.');
+      return;
+    }
+
+    setSocialError('');
+    setGoogleLoading(true);
+    try {
+      await loginWithGoogle(credential);
+      redirectAfterLogin();
+    } catch (err) {
+      setSocialError(
+        err.response?.data?.message || 'Unable to sign in with Google'
+      );
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
+
+  const handleGoogleError = () => {
+    setSocialError('Unable to verify your Google account.');
   };
 
   return (
@@ -44,7 +77,9 @@ export default function LoginPage() {
         <h1 style={styles.title}>Sign in</h1>
         <p style={styles.sub}>Access your threat analysis dashboard</p>
 
-        {error && <div style={styles.errorBox}>{error}</div>}
+        {(error || socialError) && (
+          <div style={styles.errorBox}>{error || socialError}</div>
+        )}
 
         <form onSubmit={handleSubmit} style={styles.form} autoComplete="off">
           <div style={styles.field}>
@@ -61,21 +96,37 @@ export default function LoginPage() {
           </div>
           <div style={styles.field}>
             <label style={styles.label}>Password</label>
-            <input
-              type="password"
+            <PasswordField
               name="password"
-              autoComplete="current-password"
               value={form.password}
               onChange={handleChange}
               placeholder="••••••••"
-              required
-              style={styles.input}
+              autoComplete="current-password"
             />
           </div>
           <button type="submit" disabled={loading || !isFormValid} style={styles.btn}>
             {loading ? 'Signing in...' : 'Sign In →'}
           </button>
         </form>
+
+        <div style={styles.dividerRow}>
+          <span style={styles.dividerLine} />
+          <span style={styles.dividerText}>or</span>
+          <span style={styles.dividerLine} />
+        </div>
+
+        <div style={styles.googleWrapper}>
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={handleGoogleError}
+            useOneTap
+            shape="pill"
+          />
+        </div>
+
+        {googleLoading && (
+          <p style={styles.googleHelper}>Signing in with Google…</p>
+        )}
 
         <p style={{ ...styles.footer, fontSize: '0.75rem' }}>
           <Link to="/forgot-password" style={{ color: '#00d4ff' }}>
@@ -101,7 +152,7 @@ const styles = {
   grid: {
     position: 'fixed', inset: 0,
     backgroundImage: `linear-gradient(#1e2d4508 1px, transparent 1px), linear-gradient(90deg, #1e2d4508 1px, transparent 1px)`,
-    backgroundSize: '60px 60px', poInterEvents: 'none',
+    backgroundSize: '60px 60px', pointerEvents: 'none',
   },
   card: {
     position: 'relative', zIndex: 1,
@@ -135,11 +186,38 @@ const styles = {
     background: '#00d4ff', color: '#000',
     border: 'none', borderRadius: '10px',
     fontFamily: "'Space Grotesk',sans-serif", fontWeight: 700,
-    fontSize: '0.95rem', cursor: 'poInter',
+    fontSize: '0.95rem', cursor: 'pointer',
     boxShadow: '0 0 20px rgba(0,212,255,0.25)',
     transition: 'opacity 0.2s',
   },
   footer: { textAlign: 'center', color: '#8899aa', fontSize: '0.85rem', fontFamily: "'Inter',sans-serif" },
+  dividerRow: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '0.5rem',
+    margin: '1.25rem 0 0.25rem',
+  },
+  dividerLine: {
+    flex: 1,
+    height: '1px',
+    background: 'rgba(255,255,255,0.12)',
+  },
+  dividerText: {
+    fontSize: '0.7rem',
+    letterSpacing: '0.3em',
+    textTransform: 'uppercase',
+    color: '#8899aa',
+  },
+  googleWrapper: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  googleHelper: {
+    textAlign: 'center',
+    color: '#8899aa',
+    fontSize: '0.75rem',
+    marginTop: '0.4rem',
+  },
 };
 
 
