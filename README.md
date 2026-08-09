@@ -319,6 +319,41 @@ The `UrlAnalysisService` runs 9 parallel heuristic checks:
 
 ---
 
+## 🐳 Docker Deployment
+
+SecureLens is fully containerized using Docker and Docker Compose for single-command deployment.
+
+### Quick Start with Docker Compose
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Dineshkumar0206/Secure_Lens.git
+   cd Secure_Lens
+   ```
+
+2. **(Optional) Configure environment variables:**
+   Copy `.env.example` to `.env` and set your custom values:
+   ```bash
+   cp .env.example .env
+   ```
+
+3. **Build and start all services:**
+   ```bash
+   docker compose up --build -d
+   ```
+
+4. **Access the application:**
+   - **Frontend App**: [http://localhost:3000](http://localhost:3000)
+   - **Spring Boot Backend**: [http://localhost:8090](http://localhost:8090)
+   - **MySQL Database**: `localhost:3306`
+
+5. **Stop services:**
+   ```bash
+   docker compose down
+   ```
+
+---
+
 ## 🚀 Production Deployment Notes
 
 1. **Change JWT secret** to a cryptographically random 256-bit key

@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: securelens-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-securelens_db}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-0206}
+    ports:
+      - "${DB_PORT:-3306}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$${MYSQL_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - securelens-net
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: securelens-backend
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SERVER_PORT: 8090
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME:-securelens_db}
+      DB_USER: root
+      DB_PASSWORD: ${DB_PASSWORD:-0206}
+      JWT_SECRET: ${JWT_SECRET:-4ec5e8b05fa878462bd10e0a722c6656bc02811343163b210e281fc0ac52030a}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:3001,http://localhost,http://127.0.0.1:3000}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
+      MAIL_HOST: ${MAIL_HOST:-smtp.gmail.com}
+      MAIL_PORT: ${MAIL_PORT:-587}
+      MAIL_USERNAME: ${MAIL_USERNAME:-securelensz@gmail.com}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-hnsc xwtr qyiv zswh}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-980019107126-trekepj3uiojgetr3hpeig4mt6a64lnj.apps.googleusercontent.com}
+    ports:
+      - "8090:8090"
+    networks:
+      - securelens-net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost:8090}
+        REACT_APP_GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-980019107126-trekepj3uiojgetr3hpeig4mt6a64lnj.apps.googleusercontent.com}
+    container_name: securelens-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    networks:
+      - securelens-net
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  securelens-net:
+    driver: bridge
