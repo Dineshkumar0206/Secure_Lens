@@ -15,7 +15,7 @@
 .env.test
 .env*.local
 application-secret.properties
-application.properties
+!backend/src/main/resources/application.properties
 secrets.properties
 *.pem
 *.key
