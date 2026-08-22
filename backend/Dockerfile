@@ -22,5 +22,5 @@ COPY --from=builder /app/target/securelens-backend-1.0.0.jar app.jar
 # Expose backend port
 EXPOSE 8090
 
-# Set entrypoint
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Set entrypoint with memory optimization for 512MB container
+ENTRYPOINT ["java", "-Xmx384m", "-jar", "app.jar"]
