@@ -21,7 +21,7 @@ public class GoogleTokenVerifier {
 
     private final GoogleIdTokenVerifier verifier;
 
-    public GoogleTokenVerifier(@Value("${app.google.client-id}") String clientId) {
+    public GoogleTokenVerifier(@Value("${app.google.client-id:}") String clientId) {
         this.verifier = new GoogleIdTokenVerifier.Builder(
                 new NetHttpTransport(),
                 JacksonFactory.getDefaultInstance())

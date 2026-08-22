@@ -40,7 +40,7 @@ public class WebSecurityConfig {
      * Read the comma-separated allowed origins from application.properties.
      * e.g. "http://localhost:3000,http://localhost:3001"
      */
-    @Value("${app.cors.allowed-origins}")
+    @Value("${app.cors.allowed-origins:http://localhost:3000}")
     private String allowedOriginsRaw;
 
     /**
