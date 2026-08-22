@@ -50,8 +50,19 @@ public class CorsConfig implements Filter {
         Set<String> trimmed = new HashSet<>();
         for (String o : allowedOrigins) trimmed.add(o.trim());
 
-        // Only set the header if the request origin is in our allow-list
-        if (requestOrigin != null && trimmed.contains(requestOrigin)) {
+        // Check if origin matches allowed list, wildcard, or vercel/localhost patterns
+        boolean isAllowed = false;
+        if (requestOrigin != null) {
+            if (trimmed.contains("*") || allowedOriginsRaw.equals("*")) {
+                isAllowed = true;
+            } else if (trimmed.contains(requestOrigin) || trimmed.contains(requestOrigin + "/")) {
+                isAllowed = true;
+            } else if (requestOrigin.endsWith(".vercel.app") || requestOrigin.contains("localhost") || requestOrigin.contains("127.0.0.1")) {
+                isAllowed = true;
+            }
+        }
+
+        if (isAllowed) {
             response.setHeader("Access-Control-Allow-Origin",      requestOrigin);
             response.setHeader("Access-Control-Allow-Credentials", "true");
             response.setHeader("Access-Control-Allow-Methods",     "GET, POST, PUT, DELETE, OPTIONS, PATCH");

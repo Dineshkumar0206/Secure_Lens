@@ -85,14 +85,18 @@ public class WebSecurityConfig {
      */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        // Split "http://localhost:3000,http://localhost:3001" into a proper list
-        List<String> origins = Arrays.stream(allowedOriginsRaw.split(","))
+        CorsConfiguration configuration = new CorsConfiguration();
+        
+        // Use allowedOriginPatterns to support Vercel preview/production domains dynamically
+        List<String> patterns = Arrays.stream(allowedOriginsRaw.split(","))
                 .map(String::trim)
                 .filter(s -> !s.isEmpty())
                 .collect(Collectors.toList());
+        patterns.add("https://*.vercel.app");
+        patterns.add("http://localhost:*");
+        patterns.add("http://127.0.0.1:*");
 
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(origins);
+        configuration.setAllowedOriginPatterns(patterns);
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList(
                 "Authorization", "Content-Type", "Accept",
