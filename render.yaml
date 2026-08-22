@@ -22,6 +22,8 @@ services:
         sync: false
       - key: DB_PASSWORD
         sync: false
+      - key: DB_USE_SSL
+        value: "true"
       - key: JWT_SECRET
         generateValue: true
       - key: CORS_ALLOWED_ORIGINS
